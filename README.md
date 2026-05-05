@@ -113,8 +113,7 @@ us-gdp-debt-analysis/
 │
 ├── notebooks/
 │   ├── 01_limpieza.ipynb                # Limpieza y transformación
-│   ├── 02_analisis.ipynb                # Análisis exploratorio con Python
-│   └── 03_visualizacion.ipynb           # Visualizaciones adicionales
+│   └── 02_analisis.ipynb                # Análisis exploratorio con Python
 │
 ├── src/
 │   └── cleaning_functions.py            # Pipeline de limpieza modular y reutilizable
