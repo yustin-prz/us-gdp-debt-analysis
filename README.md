@@ -97,7 +97,7 @@ us-gdp-debt-analysis/
 
 ```bash
 # 1. Clonar el repositorio
-git clone https://github.com/tu-usuario/us-gdp-debt-analysis.git
+git clone https://github.com/yustin-prz/us-gdp-debt-analysis.git
 cd us-gdp-debt-analysis
 
 # 2. Instalar dependencias
@@ -119,5 +119,5 @@ jupyter notebook notebooks/01_limpieza.ipynb
 
 ## Autor
 
-**[Tu nombre]**  
-[LinkedIn](https://linkedin.com/in/tu-perfil) · [GitHub](https://github.com/tu-usuario)
+**Yustin Eduardo Pérez Castro**  
+[LinkedIn](www.linkedin.com/in/yustin-prz) · [GitHub](https://github.com/yustin-prz)
