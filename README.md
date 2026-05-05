@@ -1,6 +1,6 @@
 # US GDP vs Public Debt Analysis (1947–2020)
 
-Limpieza, transformación y análisis exploratorio de series temporales macroeconómicas de Estados Unidos. El dataset cubre 295 quarters de datos trimestrales del PIB nominal y la deuda pública total desde 1947 hasta 2020.
+Limpieza, transformación, análisis exploratorio y visualización de series temporales macroeconómicas de Estados Unidos. El dataset cubre 295 quarters de datos trimestrales del PIB nominal y la deuda pública total desde 1947 hasta 2020.
 
 ---
 
@@ -39,7 +39,7 @@ Análisis completo de nulos, tipos de datos, duplicados y rango temporal antes d
 - Decisión documentada de **no imputar** los 77 nulos históricos — los datos de deuda trimestral no se reportaban sistemáticamente antes de 1966; imputarlos habría introducido datos ficticios en un período históricamente significativo
 
 ### 3. Feature engineering
-Creación de 6 columnas derivadas de alto valor analítico:
+Creación de 7 columnas derivadas de alto valor analítico:
 
 | Columna | Descripción |
 |---|---|
@@ -54,6 +54,34 @@ Creación de 6 columnas derivadas de alto valor analítico:
 ### 4. Validación
 Suite de 10 checks automáticos que verifican tipos de datos, rangos esperados, integridad de las transformaciones y cobertura temporal.
 
+### 5. Análisis exploratorio
+5 preguntas de negocio respondidas con visualizaciones en Python:
+- Evolución histórica del GDP (1947–2020)
+- Severidad comparativa de cada recesión
+- Evolución del ratio Deuda/GDP desde 1966
+- Crecimiento económico promedio por década
+- Comparativa directa: Crisis 2008 vs COVID-19
+
+### 6. Dashboard en Power BI
+Dashboard interactivo de 3 páginas construido sobre los datasets limpios:
+
+**Página 1 — Visión general**
+- 4 tarjetas KPI: GDP máximo, Deuda máxima, Ratio Deuda/GDP pico, Quarters sobre 100%
+- Gráfico de área: evolución histórica del GDP (1947–2020)
+- Gráfico de barras: crecimiento promedio del GDP por década
+- Segmentador interactivo por década
+
+**Página 2 — Análisis de deuda**
+- Gráfico de línea: ratio Deuda/GDP con línea de referencia al 100%
+- Gráfico de barras: crecimiento trimestral de la deuda
+- Scatter plot: GDP vs Deuda coloreado por década
+- Tarjeta: quarters históricos con deuda superior al 100% del GDP
+
+**Página 3 — Recesiones**
+- Gráfico de columnas con formato condicional: barras rojas para quarters negativos
+- Tabla filtrada: solo quarters en recesión con su variación del GDP
+- Tarjeta: peor quarter histórico (-9.47% en 2020 Q2)
+
 ---
 
 ## Resultados
@@ -64,7 +92,12 @@ df (completo):      295 filas × 10 columnas
 df_complete:        218 filas × 12 columnas  ← sin nulos, listo para análisis
 ```
 
-**Hallazgo clave:** el ratio Deuda/GDP pasó de ~40% en 1966 a ~135% en 2020 Q2, con el salto más abrupto de toda la serie histórica ocurriendo en un único quarter: 2020 Q2 (+28 puntos porcentuales), producto de la caída del PIB y el aumento masivo del gasto fiscal durante el inicio de la pandemia de COVID-19.
+**Hallazgos principales:**
+
+- El COVID-19 generó la caída trimestral más severa de toda la serie: **-9.47% en 2020 Q2**, casi el triple que el peor quarter de 2008
+- El ratio Deuda/GDP pasó de ~40% en 1966 a **135.6% en 2020**, superando el umbral del 100% por primera vez en 2013
+- Las décadas de los **1970s y 1980s** registraron el mayor crecimiento trimestral promedio del GDP
+- Cada crisis desde 1980 dejó el ratio Deuda/GDP en un piso más alto que el anterior, sin retornar nunca a niveles pre-crisis
 
 ---
 
@@ -74,18 +107,19 @@ df_complete:        218 filas × 12 columnas  ← sin nulos, listo para análisi
 us-gdp-debt-analysis/
 │
 ├── data/
-│   ├── US_GDP_vs_Debt.csv          # Dataset original — no modificado
-│   ├── gdp_debt_clean.csv          # Dataset limpio completo (295 filas)
-│   └── gdp_debt_complete.csv       # Sin nulos, listo para análisis (218 filas)
+│   ├── US_GDP_vs_Debt.csv               # Dataset original — no modificado
+│   ├── gdp_debt_clean.csv               # Dataset limpio completo (295 filas)
+│   └── gdp_debt_complete.csv            # Sin nulos, listo para análisis (218 filas)
 │
 ├── notebooks/
-│   ├── 01_limpieza.ipynb           # Limpieza y transformación ← este notebook
-│   ├── 02_analisis.ipynb           # Análisis exploratorio (próximamente)
-│   └── 03_visualizacion.ipynb      # Dashboard y visualizaciones (próximamente)
+│   ├── 01_limpieza.ipynb                # Limpieza y transformación
+│   ├── 02_analisis.ipynb                # Análisis exploratorio con Python
+│   └── 03_visualizacion.ipynb           # Visualizaciones adicionales
 │
 ├── src/
-│   └── cleaning_functions.py       # Funciones reutilizables extraídas del notebook
+│   └── cleaning_functions.py            # Pipeline de limpieza modular y reutilizable
 │
+├── US_GDP_Debt_Dashboard.pbix           # Dashboard interactivo en Power BI
 ├── .gitignore
 ├── requirements.txt
 └── README.md
@@ -103,21 +137,32 @@ cd us-gdp-debt-analysis
 # 2. Instalar dependencias
 pip install -r requirements.txt
 
-# 3. Abrir el notebook
-jupyter notebook notebooks/01_limpieza.ipynb
+# 3. Correr el notebook de limpieza primero (genera los CSVs limpios)
+python -m jupyter notebook notebooks/01_limpieza.ipynb
+
+# 4. Correr el análisis exploratorio
+python -m jupyter notebook notebooks/02_analisis.ipynb
+
+# 5. Abrir el dashboard en Power BI Desktop
+# Archivo → Abrir → US_GDP_Debt_Dashboard.pbix
 ```
+
+> **Nota:** Es necesario correr `01_limpieza.ipynb` primero para generar `gdp_debt_clean.csv` y `gdp_debt_complete.csv` antes de abrir el dashboard en Power BI.
 
 ---
 
 ## Herramientas
 
-![Python](https://img.shields.io/badge/Python-3.10-blue?style=flat-square)
+![Python](https://img.shields.io/badge/Python-3.14-blue?style=flat-square)
 ![Pandas](https://img.shields.io/badge/Pandas-2.2-blue?style=flat-square)
 ![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-orange?style=flat-square)
+![Power BI](https://img.shields.io/badge/Power%20BI-Desktop-yellow?style=flat-square)
+![Matplotlib](https://img.shields.io/badge/Matplotlib-3.8-blue?style=flat-square)
+![Seaborn](https://img.shields.io/badge/Seaborn-0.13-blue?style=flat-square)
 
 ---
 
 ## Autor
 
-**Yustin Eduardo Pérez Castro**  
-[LinkedIn](www.linkedin.com/in/yustin-prz) · [GitHub](https://github.com/yustin-prz)
+**[Tu nombre]**  
+[LinkedIn](https://linkedin.com/in/tu-perfil) · [GitHub](https://github.com/yustin-prz)
