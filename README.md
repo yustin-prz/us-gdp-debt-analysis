@@ -164,5 +164,5 @@ python -m jupyter notebook notebooks/02_analisis.ipynb
 
 ## Autor
 
-**[Tu nombre]**  
-[LinkedIn](https://linkedin.com/in/tu-perfil) · [GitHub](https://github.com/yustin-prz)
+**Yustin Eduardo Pérez Castro**  
+[LinkedIn](https://www.linkedin.com/in/yustin-prz/) · [GitHub](https://github.com/yustin-prz)
